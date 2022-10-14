@@ -1,13 +1,6 @@
-<script setup>
-const props = defineProps({
-  activeTab: {
-    type: String,
-    required: true,
-  },
-});
-</script>
+<script setup></script>
 <template>
-  <div v-show="activeTab === 'Publish'">
+  <div>
     <slot />
   </div>
 </template>

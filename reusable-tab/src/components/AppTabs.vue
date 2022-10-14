@@ -1,6 +1,7 @@
 <script setup>
-import { ref } from "vue";
-import AppTabBody from "./AppTabBody.vue";
+import { onMounted } from "vue";
+import { useTab } from "../stores/useTab";
+const useTabStore = useTab();
 
 const props = defineProps({
   tabPanels: {
@@ -9,22 +10,10 @@ const props = defineProps({
   },
 });
 
-// const tabOptions = ref([
-//   {
-//     tabTitle: "Publish",
-//   },
-//   {
-//     tabTitle: "Draft",
-//   },
-// ]);
-
-const activeTab = ref("Publish");
-
-const selectedCurrentTab = () => {};
-const tabSwitchHandler = (tab) => {
-  activeTab.value = tab;
-  console.log(tab);
-};
+onMounted(() => {
+  const firstTab = props.tabPanels[0];
+  useTabStore.setCurrentTab(firstTab.tabTitle);
+});
 </script>
 
 <template>
@@ -34,18 +23,12 @@ const tabSwitchHandler = (tab) => {
     <ul class="flex space-x-10">
       <li
         v-for="tabTitle in props.tabPanels"
-        @click="tabSwitchHandler(tabTitle.tabTitle)"
+        @click="useTabStore.tabSwitchHandler(tabTitle.tabTitle)"
         class="cursor-pointer bg-slate-400 p-2"
       >
-        {{ tabTitle.tabTitle }}
+        {{ tabTitle.tabTitle }} <span> Tabs</span>
       </li>
     </ul>
-
-    <!-- <div class="mt-5" v-for="tab in props.tabPanels">
-      <div v-if="tab.tabTitle === activeTab">
-        <h1>Hello {{ activeTab }}</h1>
-       
-      </div>
-    </div> -->
+    <slot />
   </main>
 </template>

@@ -1,7 +1,12 @@
 <script setup>
 import { ref } from "vue";
+import { storeToRefs } from "pinia";
 import AppTabs from "../components/AppTabs.vue";
 import AppTabBody from "../components/AppTabBody.vue";
+import { useTab } from "../stores/useTab";
+const useTabStore = useTab();
+
+const { currentTab } = storeToRefs(useTabStore);
 
 const tabOptions = ref([
   {
@@ -10,16 +15,23 @@ const tabOptions = ref([
   {
     tabTitle: "Draft",
   },
+  {
+    tabTitle: "Cool",
+  },
 ]);
 </script>
 
 <template>
   <main class="container m-auto">
-    <h1 class="text-center text-lg">Vue Reusable Tab Components</h1>
     <AppTabs :tabPanels="tabOptions">
-      <AppTabBody activeTab="Publish">
-        <h1>Hello world</h1> 
-
+      <AppTabBody v-show="currentTab === 'Publish'">
+        <h1>Hello world {{ currentTab }}</h1>
+      </AppTabBody>
+      <AppTabBody v-show="currentTab === 'Draft'">
+        <h1>Hello {{ currentTab }}</h1>
+      </AppTabBody>
+      <AppTabBody v-show="currentTab === 'Cool'">
+        <h1>{{ currentTab }}</h1>
       </AppTabBody>
     </AppTabs>
   </main>
